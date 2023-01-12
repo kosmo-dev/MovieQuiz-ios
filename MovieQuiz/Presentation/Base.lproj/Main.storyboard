@@ -126,7 +126,7 @@
                         <color key="backgroundColor" name="Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YNq-zR-dY0" secondAttribute="trailing" constant="20" id="QPM-Ra-v3l"/>
-                            <constraint firstAttribute="bottom" secondItem="YNq-zR-dY0" secondAttribute="bottom" constant="34" id="hjl-ZM-Vwu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YNq-zR-dY0" secondAttribute="bottom" id="hjl-ZM-Vwu"/>
                             <constraint firstItem="YNq-zR-dY0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="hml-6F-nNQ"/>
                             <constraint firstItem="YNq-zR-dY0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="is7-52-1lh"/>
                         </constraints>
@@ -134,7 +134,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="EzG-Q9-BAe" id="v18-VD-7t5"/>
                         <outlet property="imageView" destination="0AW-Li-qa3" id="FCX-JP-MFA"/>
+                        <outlet property="noButton" destination="0Gu-qu-Za7" id="D8A-5M-Fem"/>
                         <outlet property="textLabel" destination="WGr-GK-n63" id="RcW-7q-Zb8"/>
+                        <outlet property="yesButton" destination="3lu-Gi-59Z" id="qRt-aX-3cL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
