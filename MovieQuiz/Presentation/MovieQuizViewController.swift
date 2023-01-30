@@ -15,11 +15,13 @@ final class MovieQuizViewController: UIViewController {
     private let questionAmount = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenterProtocol?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
+        alertPresenter = AlertPresenter(delegate: self)
         questionFactory?.requestNextQuestion()
     }
 
@@ -50,19 +52,17 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
+        let alertModel = AlertModel(
             title: result.title,
             message: result.text,
-            preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self else {return}
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
+            buttonText: result.buttonText) { [weak self] in
+                guard let self else {return}
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
 
-            self.questionFactory?.requestNextQuestion()
-        }
-        alert.addAction(action)
-        self.present(alert, animated: true)
+                self.questionFactory?.requestNextQuestion()
+            }
+        alertPresenter?.show(alertModel: alertModel)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
@@ -123,5 +123,11 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+    }
+}
+
+extension MovieQuizViewController: AlertPresenterDelegate {
+    func presentAlertView(alert: UIAlertController) {
+        self.present(alert, animated: true)
     }
 }
