@@ -16,6 +16,7 @@ final class MovieQuizViewController: UIViewController {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -23,6 +24,7 @@ final class MovieQuizViewController: UIViewController {
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory?.requestNextQuestion()
+        statisticService = StatisticServiceImplementation()
     }
 
 
@@ -52,9 +54,19 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
+        guard let statisticService else {
+            return
+        }
+        statisticService.store(correct: correctAnswers, total: questionAmount)
+
+        let quizCountText = "Количество сыгранных квизов \(statisticService.gamesCount)"
+        let recordText = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+        let accuracyText = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy * 100 / Double(statisticService.gamesCount)))%"
+        let message = "\(result.text)\n \(quizCountText)\n \(recordText)\n \(accuracyText)"
+
         let alertModel = AlertModel(
             title: result.title,
-            message: result.text,
+            message: message,
             buttonText: result.buttonText) { [weak self] in
                 guard let self else {return}
                 self.currentQuestionIndex = 0
@@ -97,7 +109,7 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questionAmount - 1 {
             let resultsViewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат: \(correctAnswers) из \(questionAmount)",
+                text: "Ваш результат: \(correctAnswers)/\(questionAmount)",
                 buttonText: "Сыграть ещё раз")
             show(quiz: resultsViewModel)
         } else {
@@ -126,6 +138,7 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
     }
 }
 
+// MARK: - AlertPresenterDelegate
 extension MovieQuizViewController: AlertPresenterDelegate {
     func presentAlertView(alert: UIAlertController) {
         self.present(alert, animated: true)
