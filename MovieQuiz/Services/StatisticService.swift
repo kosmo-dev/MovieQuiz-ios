@@ -15,8 +15,8 @@ protocol StatisticService {
 }
 
 final class StatisticServiceImplementation: StatisticService {
-    let jsonDecoder = JSONDecoder()
-    let jsonEncoder = JSONEncoder()
+    private let jsonDecoder = JSONDecoder()
+    private let jsonEncoder = JSONEncoder()
 
     private let userDefaults = UserDefaults.standard
 
@@ -26,35 +26,19 @@ final class StatisticServiceImplementation: StatisticService {
 
     var totalAccuracy: Double {
         get {
-            guard let data = userDefaults.data(forKey: Keys.total.rawValue),
-                  let total = try? jsonDecoder.decode(Double.self, from: data) else {
-                return 0
-            }
-            return total
+            return userDefaults.double(forKey: Keys.total.rawValue)
         }
         set {
-            guard let data = try? jsonEncoder.encode(newValue) else {
-                print("Невозможно сохранить точность")
-                return
-            }
-            userDefaults.set(data, forKey: Keys.total.rawValue)
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
         }
     }
 
     var gamesCount: Int {
         get {
-            guard let data = userDefaults.data(forKey: Keys.gamesCount.rawValue),
-                  let count = try? jsonDecoder.decode(Int.self, from: data) else {
-                return 0
-            }
-            return count
+            return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
-            guard let data = try? jsonEncoder.encode(newValue) else {
-                print("Невозможно сохранить количество игр")
-                return
-            }
-            userDefaults.set(data, forKey: Keys.gamesCount.rawValue)
+            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
 
@@ -83,10 +67,5 @@ final class StatisticServiceImplementation: StatisticService {
         if newGame > bestGame {
             bestGame = newGame
         }
-    }
-
-    func clean() {
-        totalAccuracy = 0
-        gamesCount = 0
     }
 }

@@ -59,7 +59,7 @@ final class MovieQuizViewController: UIViewController {
         }
         statisticService.store(correct: correctAnswers, total: questionAmount)
 
-        let quizCountText = "Количество сыгранных квизов \(statisticService.gamesCount)"
+        let quizCountText = "Количество сыгранных квизов: \(statisticService.gamesCount)"
         let recordText = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
         let accuracyText = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy * 100 / Double(statisticService.gamesCount)))%"
         let message = "\(result.text)\n \(quizCountText)\n \(recordText)\n \(accuracyText)"
@@ -73,8 +73,10 @@ final class MovieQuizViewController: UIViewController {
                 self.correctAnswers = 0
 
                 self.questionFactory?.requestNextQuestion()
+                self.enableButtons(true)
             }
         alertPresenter?.show(alertModel: alertModel)
+        enableButtons(false)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
