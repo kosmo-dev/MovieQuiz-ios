@@ -121,10 +121,15 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="I3l-ZZ-y84">
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="Black"/>
                         <constraints>
+                            <constraint firstItem="I3l-ZZ-y84" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CZf-ot-bQZ"/>
+                            <constraint firstItem="I3l-ZZ-y84" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Dwm-Y1-UfX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YNq-zR-dY0" secondAttribute="trailing" constant="20" id="QPM-Ra-v3l"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YNq-zR-dY0" secondAttribute="bottom" id="hjl-ZM-Vwu"/>
                             <constraint firstItem="YNq-zR-dY0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="hml-6F-nNQ"/>
@@ -132,6 +137,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="I3l-ZZ-y84" id="ywv-Hw-mfJ"/>
                         <outlet property="counterLabel" destination="EzG-Q9-BAe" id="v18-VD-7t5"/>
                         <outlet property="imageView" destination="0AW-Li-qa3" id="FCX-JP-MFA"/>
                         <outlet property="noButton" destination="0Gu-qu-Za7" id="D8A-5M-Fem"/>

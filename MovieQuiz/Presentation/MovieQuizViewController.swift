@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak private var counterLabel: UILabel!
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
-
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     // MARK: - Private Properties
     private var currentQuestionIndex = 0
@@ -123,6 +123,34 @@ final class MovieQuizViewController: UIViewController {
     private func enableButtons(_ enable: Bool) {
         noButton.isEnabled = enable
         yesButton.isEnabled = enable
+    }
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+
+        let errorAlertModel = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще раз") { [weak self] in
+                guard let self else {
+                    return
+                }
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+
+                self.questionFactory?.requestNextQuestion()
+            }
+        alertPresenter?.show(alertModel: errorAlertModel)
     }
 }
 
