@@ -21,10 +21,12 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
-        questionFactory?.requestNextQuestion()
         statisticService = StatisticServiceImplementation()
+
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
 
 
@@ -100,10 +102,9 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let quizStepViewModel = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionAmount)")
+        let quizStepViewModel = QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
+                                                  question: model.text,
+                                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionAmount)")
         return quizStepViewModel
     }
 
@@ -148,7 +149,7 @@ final class MovieQuizViewController: UIViewController {
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
 
-                self.questionFactory?.requestNextQuestion()
+                self.questionFactory?.loadData()
             }
         alertPresenter?.show(alertModel: errorAlertModel)
     }
@@ -156,6 +157,15 @@ final class MovieQuizViewController: UIViewController {
 
 // MARK: - QuestionFactoryDelegate
 extension MovieQuizViewController: QuestionFactoryDelegate {
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question else {
             return
