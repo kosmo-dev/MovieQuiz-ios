@@ -23,6 +23,7 @@ class AlertPresenter: AlertPresenterProtocol {
             alertModel.completion()
         }
         alert.addAction(action)
+        alert.view.accessibilityIdentifier = "Alert"
         delegate?.presentAlertView(alert: alert)
     }
 }
