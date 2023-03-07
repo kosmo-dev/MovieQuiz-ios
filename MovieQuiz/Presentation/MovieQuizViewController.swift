@@ -25,7 +25,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
 
     // MARK: - Private Properties
-    private var alertPresenter: AlertPresenter?
+    private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
 
     // MARK: - Lifecycle
