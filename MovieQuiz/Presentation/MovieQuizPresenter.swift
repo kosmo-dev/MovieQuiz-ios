@@ -77,7 +77,7 @@ final class MovieQuizPresenter {
         currentQuestionIndex += 1
     }
 
-    private func showNextQuestionOrResult() {
+    private func proceedToNextQuestionOrResult() {
         if isLastQuestion() {
             let resultsViewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
@@ -95,13 +95,17 @@ final class MovieQuizPresenter {
             return
         }
         let givenAnswer = isYes
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 
-    private func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
+    private func didAnswer(isCorrectAnswer: Bool) {
+        if isCorrectAnswer {
             correctAnswers += 1
         }
+    }
+
+    private func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
 
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         viewController?.enableButtons(false)
@@ -112,7 +116,7 @@ final class MovieQuizPresenter {
             }
             self.viewController?.makeDefaultImage()
             self.viewController?.enableButtons(true)
-            self.showNextQuestionOrResult()
+            self.proceedToNextQuestionOrResult()
         }
     }
 }
