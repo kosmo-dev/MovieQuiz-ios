@@ -114,7 +114,7 @@ final class MovieQuizPresenter {
             guard let self else {
                 return
             }
-            self.viewController?.makeDefaultImage()
+            self.viewController?.resetImageBorderToDefault()
             self.viewController?.enableButtons(true)
             self.proceedToNextQuestionOrResult()
         }

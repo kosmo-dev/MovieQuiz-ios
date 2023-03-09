@@ -12,7 +12,7 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     func showNetworkError(message: String)
 
     func enableButtons(_ enable: Bool)
-    func makeDefaultImage()
+    func resetImageBorderToDefault()
 }
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
@@ -55,6 +55,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
 
     func show(quiz result: QuizResultsViewModel) {
+        enableButtons(false)
         let message = presenter.makeResultsMessage()
 
         let alertModel = AlertModel(title: result.title, message: message, buttonText: result.buttonText) { [weak self] in
@@ -65,7 +66,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             self.enableButtons(true)
         }
         alertPresenter?.show(alertModel: alertModel)
-        enableButtons(false)
     }
 
     func enableButtons(_ enable: Bool) {
@@ -104,7 +104,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
 
-    func makeDefaultImage() {
+    func resetImageBorderToDefault() {
         imageView.layer.borderWidth = 0
     }
 }

@@ -37,7 +37,7 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
 
     }
 
-    func makeDefaultImage() {
+    func resetImageBorderToDefault() {
 
     }
 }
